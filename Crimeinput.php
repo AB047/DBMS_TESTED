@@ -218,6 +218,13 @@ This page comes in when the cop registration is successfull-->
 	</table>
 
 	<input type="submit" name="submit" align="center" onsubmit="" class="btn btn-default"><br><br>
+    <div class="alert alert-success">
+        <strong>Success!</strong> The record has been stored!
+    </div>
+
+    <div class="alert alert-danger">
+        <strong>Error!</strong> The record is not saved.
+    </div>
 	</form>
 	<a href="delpge.php" class="btn btn-default">Delete a record</a>
 </center>

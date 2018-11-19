@@ -20,7 +20,9 @@ session_start();
                 <ul class="nav navbar-nav" style="font-size: 15px">
                     <li><a>Civilian viewing</a></li>
                 </ul>
-
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="Homepage.html">Log out</a></li>
+                </ul>
             </div>
         </div>
  </nav>
@@ -75,7 +77,7 @@ session_start();
 				</div>
 			
 		</table>
-		<center><a href="homepage.php"><button class="btn btn-default">Homepage</button></a></center>   	
+<!--		<center><a href="homepage.php"><button class="btn btn-default">Homepage</button></a></center>   	-->
 </div>
 </body>
 </html>
