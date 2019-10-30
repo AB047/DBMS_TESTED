@@ -1,0 +1,130 @@
+body {
+	background: linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8)),
+	url('bg.jpg');
+}	
+
+.cen{
+text-align: center;
+margin: 20px;
+}
+
+.reg_form{
+	align-items: center;
+	align-content: flex-end;
+
+}
+
+
+.input_form{
+  width: 50%;
+  padding: 12px 20px;
+  margin: 20px 20px;
+  background-color: transparent;
+  border: 2px solid gray;
+  border-radius: 5px;
+  -webkit-transition-duration: 0.4s; 
+transition-duration: 0.4s;
+}
+.input_form:focus {
+  border: 2px solid white;
+}
+
+.input_form_crime{
+  padding: 12px 20px;
+  margin: 20px 20px;
+  background-color: transparent;
+  border: 2px solid gray;
+  border-radius: 5px;
+  -webkit-transition-duration: 0.4s; 
+transition-duration: 0.4s;
+}
+.input_form_crime:focus {
+  border: 2px solid white;
+}
+.btn1{
+	border: 2px solid #fc7303;
+	background-color: transparent; 
+	color:  #fc7303;
+	border-radius: 8px;
+	font-size: 20px;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+	text-decoration: none !important;
+	padding: 15px;
+}
+
+.chkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+.btn1:hover {
+ 
+  color: white;
+  background-color: #fc7303;
+  border: 2px solid black;
+}
+*{
+	font-family: 'Montserrat', sans-serif;
+	color: #ffffff;
+
+}
+.userForm{
+    /*margin-right:auto;*/
+    /*width: 50%;*/
+    padding-left:20px;
+    padding-right:20px;
+}
+
+
+table td{
+	padding: 10px;
+}
+a{
+	text-decoration: none;
+	color: black;
+}
+a:hover{
+	text-decoration: none;
+	color: black;
+}
+.crime_input
+{
+	font-size: 16px;
+	color: black;
+}
+
+.crime{
+	align-items: center;
+}
+.basic
+{
+	margin-top: 200px;
+}
+
+.view
+{
+	font-family: sans-serif;
+
+}
+
+.table{
+	font-size: 15px;
+	background-color: transparent;
+}
+
+
+.a {
+	padding: 10px;  
+	border-radius: 20px; 
+	width: 40%;
+	margin:50px 600px 100px 400px;  
+	background-color: #ffffff; 
+	float: left;
+}
+#loadOverlay{display: none;}
+
