@@ -1,15 +1,15 @@
 <?php
 // Include config file
 require_once "config.php";
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "demo";
-$conn = mysqli_connect($servername, $username, $password, $database);
+// $servername = "localhost";
+// $username = "root";
+// $password = "";
+// $database = "demo";
+// $conn = mysqli_connect($servername, $username, $password, $database);
  
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = "";
-$username_err = $password_err = $confirm_password_err = "";
+$username_err = $password_err = $confirm_password_err = $param_added = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -46,10 +46,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
+            mysqli_stmt_close($stmt);
         }
          
         // Close statement
-        mysqli_stmt_close($stmt);
+        
     }
     
     // Validate password
@@ -77,11 +78,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Prepare an insert statement
         if($desgn == "police" || $desgn =="POLICE")
         {
-        $sql = "INSERT INTO users (username, password, name, designation) VALUES (?, ?, '$name', '$desgn')";
+        $sql = "INSERT INTO policerecord (officialusername, password, copname, designation) VALUES (?, ?, $name, $desgn)";
         }
         else if($desgn == "admin" || $desgn == "ADMIN")
         {
-        $sql = "INSERT INTO admin (username, password) VALUES (?, ?)";
+        $sql = "INSERT INTO admin (username, password) VALUES (?,?)";
         }
         else
         {
@@ -89,30 +90,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
        // $sql1 = 'UPDATE users SET name = $name, designation = $desgn';
-       // echo $sql;
+        echo $sql;
         if (mysqli_query($conn, $sql)) {
       echo "New record created successfully";
+      
         }
          
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-            
-            // Set parameters
+        if($stmt = mysqli_prepare($conn, $sql)){
+
+             // Set parameters
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            
+            // $param_added = $desgn; 
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
+            //   echo $stmt;
+            echo "INNNNNNNNNNNN";
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
                 echo "$name was successfully added!";
+            // Close statement
+            mysqli_stmt_close($stmt);
             } else{
                 echo "Something went wrong. Please try again later.";
             }
         }
          
-        // Close statement
-        mysqli_stmt_close($stmt);
+        
+        
     }
     
     // Close connection
@@ -122,65 +128,75 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
  
 <!DOCTYPE html>
 <html lang="en">
+<head><div id="loadOverlay" style="background-color:#333; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div></head>
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
+    <!-- <style type="text/css">
         body{ font: 14px sans-serif; }
         .wrapper{ width: 350px; padding: 20px; }
-    </style>
+    </style> -->
 </head>
 <body>
-     <nav class="navbar navbar-default">
-        <div class="container-fluid">
+     <nav class="navbar navbar-expand-sm bg-transparent border-bottom navbar-dark">
+        <div class="container">
             <div class="navbar-header">
-                <a href="homepage.php" class="navbar-brand">Police Database</a>
+                <a href="homepage.php" class="navbar-brand">Traffic Police Database</a>
             </div>
 
             <div>
-                <ul class="nav navbar-nav">
-                    <li class=""><a href="">Logged in as Admin</a></li>
+                <!-- <ul class -->
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class = "nav-link" href="homepage.php">Civilian</a></li>
+                <!-- </ul> -->
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="About.html">About</a></li>
+                <!-- </ul> -->
+
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="Contact.html">Contact Us</a></li>
                 </ul>
 
             </div>
-            <div class="nav navbar-nav" style="float: right">
-                <a href="logout.php" class="btn btn-default">Log out</a>
-            </div>
         </div>
     </nav>
-    <div class="wrapper">
+    <div class="cen" style="margin: 20px">
         <h2>ADD A NEW COP</h2>
         <p>Please fill this form to add a new cop.</p>
+        <div class="reg_form">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                <input type="text" name="username" class="input_form" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_err; ?></span>
             </div>    
             <div>
                 <label>Name</label>
-                <input type="text" name="name" class="form-control">
+                <input type="text" name="name" class="input_form">
                 <span class="help-block"></span>
             </div>
             <div>
                 <label>Designation</label>
-                <input type="text" name="desgn" class="form-control">
+                <input type="text" name="desgn" class="input_form">
                 <span class="help-block"></span>
             </div>
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+                <input type="password" name="password" class="input_form" value="<?php echo $password; ?>">
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
                 <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+                <input type="password" name="confirm_password" class="input_form" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-default" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
+                <input type="submit" class="btn1" value="Submit">
+                <input type="reset" class="btn1" value="Reset">
+            </div>
             </div>
         </form>
     </div>    

@@ -4,28 +4,37 @@ session_start();
 <!--This is where the civilian is able to view the offence he has made-->
 <!DOCTYPE html>
 <html>
+	<head><div id="loadOverlay" style="background-color:#333; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div></head>
 <head>
 	<title>Viewing the offence</title>
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-        <div class="container-fluid">
+ <nav class="navbar navbar-expand-sm bg-transparent border-bottom navbar-dark">
+        <div class="container">
             <div class="navbar-header">
-                <a href="homepage.php" class="navbar-brand">Police Database</a>
+                <a href="homeapage.php" class="navbar-brand">Traffic Police Database</a>
             </div>
 
             <div>
-                <ul class="nav navbar-nav" style="font-size: 15px">
-                    <li><a>Civilian viewing</a></li>
+                <!-- <ul class -->
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class = "nav-link" href="homepage.php">Civilian</a></li>
+                <!-- </ul> -->
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="About.html">About</a></li>
+                <!-- </ul> -->
+
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="Contact.html">Contact Us</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="Homepage.html">Log out</a></li>
-                </ul>
+
             </div>
         </div>
- </nav>
+    </nav>
 <div class="view">
 		<table align="center" class="table">
 			<tr>
@@ -37,24 +46,27 @@ session_start();
 				<div class="Display">
 					<?php
 
-						$servername = "localhost";
-						$username = "root";
-						$password = "";
-						$dbname = "demo";
-						$gadno = $_SESSION["vhn"];
-						//echo $gadno;
-						$cons= "";
+						// $servername = "localhost";
+						// $username = "root";
+						// $password = "";
+						// $dbname = "demo";
+						// //echo $gadno;
+						// $cons= "";
 
-						// Create connection
-						$conn = mysqli_connect($servername, $username, $password, $dbname);
-						// Check connection
-						if ($conn) {
-							$cons= "Connection successful";
+						// // Create connection
+						// $conn = mysqli_connect($servername, $username, $password, $dbname);
+						// // Check connection
+						// if ($conn) {
+						// 	$cons= "Connection successful";
 						
-						}
-						else{
-							die("Connection failed: " . mysqli_connect_error());
-						}
+						// }
+						// else{
+						// 	die("Connection failed: " . mysqli_connect_error());
+						// }
+
+						require_once "config.php";
+						$gadno = $_SESSION["vhn"];
+						// $cons = $conn;
 
 						$sql = "SELECT offence, paid, vehicleno, place, id FROM useroffence WHERE vehicleno = '$gadno'" ;
 						$result = mysqli_query($conn, $sql);

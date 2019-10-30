@@ -19,29 +19,35 @@
 <center><button class="btn btn-default" action = "<?php //echo htmlspecialchars(logoff());?>" >Log out</button></center>   
 This page comes in when the cop registration is successfull-->
 <?php
+
  session_start();
  ?>
 <!DOCTYPE html>
 <html>
+	<head><div id="loadOverlay" style="background-color:#333; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div></head>
 <head>
 	<title>Offence form</title>
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
 	<?php
-		$servername = "127.0.0.1";
-        $username = "root";
-        $password = "";
+		// $servername = "127.0.0.1";
+        // $username = "root";
+        // $password = "";
 
-        // Create connection
-        $conn = mysqli_connect($servername, $username, $password);
+        // // Create connection
+        // $conn = mysqli_connect($servername, $username, $password);
 
-        // Check connection
-        if (!$conn) {
-            die("Connection failed: " . mysqli_connect_error());
-        }
-        //echo "Connected successfully";
+        // // Check connection
+        // if (!$conn) {
+        //     die("Connection failed: " . mysqli_connect_error());
+        // }
+		//echo "Connected successfully";
+		require_once "config.php";
+		
         mysqli_select_db($conn,"demo");
 
 		$vnoerr = $placeerr = $offerr = $finerr = "";
@@ -171,28 +177,32 @@ This page comes in when the cop registration is successfull-->
 	mysqli_close($conn);
 ?>
 
- <nav class="navbar navbar-default">
-        <div class="container-fluid">
+ <nav class="navbar navbar-expand-sm bg-transparent border-bottom navbar-dark">
+        <div class="container">
             <div class="navbar-header">
-                <a href="Homepage.html" class="navbar-brand">Police Database</a>
+                <a href="homepage.php" class="navbar-brand">Traffic Police Database</a>
             </div>
 
             <div>
-                <ul class="nav navbar-nav" style="font-size: 15px">
-                    <li><a>Cop logged in</a></li>
+                <!-- <ul class -->
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class = "nav-link" href="homepage.php">Civilian</a></li>
+                <!-- </ul> -->
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="About.html">About</a></li>
+                <!-- </ul> -->
+
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="Contact.html">Contact Us</a></li>
                 </ul>
 
             </div>
-			<div class="nav navbar-nav" style="float: right">
-                <a href="logout.php" class="btn btn-default">Log out</a>
-            </div>	 
         </div>
     </nav>
-<div class="basic">
-	<div class="crime_input">
-	<center><h1>Crime input</h1></center><br><br>
-	<center><form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "POST" class="crime_form">
-	<table class="crime" align="center" >
+<div class="cen">
+	<h1>Crime input</h1><br/><br/>
+	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "POST">
+	<table class="crime">
 		<tr>
 			<td><label for="uid">Vehicle number</label></td>
 			<td><label for="uid">Place of offence</label></td>
@@ -200,15 +210,15 @@ This page comes in when the cop registration is successfull-->
 			<td><label for="uid">Fine</label></td>
 
 		</tr>
-	</div>
+	
 		<tr id="input">
-			<td><input type="text" name="number" placeholder="Vehicle number"></td>
-			<td><input type="text" name="place" placeholder="Area"></td>
-			<td><input type="text" name="offence" placeholder="Offence"></td>
-			<td><input type="number" name="fine" placeholder="Fine"></td>
+			<td><input class = "input_form_crime" type="text" name="number" placeholder="Vehicle number"></td>
+			<td><input class = "input_form_crime" type="text" name="place" placeholder="Area"></td>
+			<td><input class = "input_form_crime" type="text" name="offence" placeholder="Offence"></td>
+			<td><input class = "input_form_crime" type="number" name="fine" placeholder="Fine"></td>
 		</tr>
 		
-		<tr id="err">
+		<tr id="err">	
 			<td><span class="error"><?php echo $vnoerr; ?> </span></td>
 			<td><span class="error"><?php echo $placeerr; ?> </span></td>
 			<td><span class="error"><?php echo $offerr; ?> </span></td>
@@ -216,18 +226,18 @@ This page comes in when the cop registration is successfull-->
 
 		</tr>
 	</table>
-
-	<input type="submit" name="submit" align="center" onsubmit="" class="btn btn-default"><br><br>
-    <div class="alert alert-success">
-        <strong>Success!</strong> The record has been stored!
+	<div class = "cen">	
+	<input type="submit" name="submit" onsubmit="send_data()" class="btn1"><br><br>	
+	<a href="delpge.php" class="btn1">Delete a record</a>
+	  <div class="alert alert-success" style="width: 50%">
+        Success! The record has been stored!
     </div>
 
-    <div class="alert alert-danger">
-        <strong>Error!</strong> The record is not saved.
-    </div>
+    <div class="alert alert-danger" style="width: 50%">
+        Error! The record is not saved.
+	</div>
+	</div>
 	</form>
-	<a href="delpge.php" class="btn btn-default">Delete a record</a>
-</center>
 </div>
 </body>
 </html>

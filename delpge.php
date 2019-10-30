@@ -2,11 +2,14 @@
 
 <!DOCTYPE html>
 <html>
+    <head><div id="loadOverlay" style="background-color:#333; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div></head>
 <head>
 	<title>
 		Sign up
 	</title>
-	<link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
@@ -64,43 +67,42 @@
     
 ?>
 
-     <nav class="navbar navbar-default">
-        <div class="container-fluid">
+     <nav class="navbar navbar-expand-sm bg-transparent border-bottom navbar-dark">
+        <div class="container">
             <div class="navbar-header">
-                <a href="Homepage.html" class="navbar-brand">Police Database</a>
+                <a href="homepage.php" class="navbar-brand">Traffic Police Database</a>
             </div>
 
             <div>
-                <ul class="nav navbar-nav" style="font-size: 15px">
-                    <li><a>Cop logged in</a></li>
+                <!-- <ul class -->
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class = "nav-link" href="homepage.php">Civilian</a></li>
+                <!-- </ul> -->
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="About.html">About</a></li>
+                <!-- </ul> -->
+
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="Contact.html">Contact Us</a></li>
                 </ul>
 
             </div>
-            <div>
-                <ul class="nav navbar-nav" style="font-size: 15px">
-                    <li><a href="Crimeinput.php">Crime input</a></li>
-                </ul>
-
-            </div>
-            <div class="nav navbar-nav" style="float: right">
-                <a href="logout.php" class="btn btn-default">Log out</a>
-            </div>   
         </div>
     </nav>
-    <div class="col-xs-12" style="height:60px;"></div>
-                <center><h2>Delete record</h2><br><br>
+    
 
-    <div class="userForm center-block">
+    <div class="cen">
+        <div class="cen"></div>
+                <h2>Delete record</h2><br><br>
       <form action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "POST">
         <div class="form-group">
           <label for="vhno">Vehicle Number</label>
-          <input type="text" class="form-control" id="vhno" placeholder="Enter Booking Number" name="vhno">
+          <input type="text" class="input_form" id="vhno" placeholder="Enter Booking Number" name="vhno">
           <span class="error"> <?php echo $vhnerr; ?> </span>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn1">Submit</button>
       </form>
     </div>
-</center>
 </body>
 </html>
 <!--Final-->
