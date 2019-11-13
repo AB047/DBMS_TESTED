@@ -1,54 +1,38 @@
-<!-- This is for the cop to enter any offence by the vehicle number and will contain the fields like
-	1. Vehicle number
-	2. Offence done
-	3. Place of offence
-	4. Fine to be paid
-	log off function here:
-
-
-<?php
-	//function logoff()
-	{
-		//session_destroy();
-		//header('Location: ');
-	}
-
-
-
-?>
-<center><button class="btn btn-default" action = "<?php //echo htmlspecialchars(logoff());?>" >Log out</button></center>   
-This page comes in when the cop registration is successfull-->
 <?php
  session_start();
- ?>
+
+  $loginusername = $_SESSION["loginusername"];
+ if(empty($loginusername))
+{
+    echo "<script>alert('Please Log in to continue!')</script>";
+    echo '<script>window.location.href = "login.php";</script>';
+}
+ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+?>
 <!DOCTYPE html>
 <html>
+	<head><div id="loadOverlay" style="background-color:#333; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div></head>
 <head>
 	<title>Offence form</title>
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
 	<?php
-		$servername = "127.0.0.1";
-        $username = "root";
-        $password = "";
-
-        // Create connection
-        $conn = mysqli_connect($servername, $username, $password);
-
-        // Check connection
-        if (!$conn) {
-            die("Connection failed: " . mysqli_connect_error());
-        }
-        //echo "Connected successfully";
+		require_once "config.php";
+		
         mysqli_select_db($conn,"demo");
 
-		$vnoerr = $placeerr = $offerr = $finerr = "";
+		$vnoerr = $placeerr = $offerr = $finerr = $usrerr = $daterr = $licerr = "";
 	    $vno = "";
 		$place = "";
 	    $off = "";
 		$fin = "";
+		$usr = "";
+		$date ="";
+		$license = "";
 		$boo = true;
 		//not null check before submit
 
@@ -102,7 +86,41 @@ This page comes in when the cop registration is successfull-->
             else{
                 $fin=chngIP($_POST["fine"]);
                 //echo $fin;
-            }//vehicle   
+			}//vehicle  
+			
+			// if(empty($_POST["datetime"]))
+			// {
+            //     // $daterr="Please Enter the correct Date and Time";
+			// 	$date = "NULL";
+            // }
+            // else{
+            //     $date=chngIP($_POST["datetime"]);
+            //     //echo $date;
+			// }//date
+			
+			if(empty($_POST["username"]))
+			{
+                $usrerr="Please Enter the correct username";
+                $boo = false;
+                
+
+            }
+            else{
+                $usr=chngIP($_POST["username"]);
+                //echo $username;
+			}//username
+			
+			if(empty($_POST["licno"]))
+			{
+                $licerr="Please Enter the correct license number: ";
+                $boo = false;
+                
+
+            }
+            else{
+                $license=chngIP($_POST["licno"]);
+                //echo $licno;
+            }//licno
             if ($boo) {
             	$boo = chk_vno($vno);
             	if ($boo) {
@@ -150,12 +168,56 @@ This page comes in when the cop registration is successfull-->
 			$fin1 = $GLOBALS["fin"];
 			$vno1 = $GLOBALS["vno"];
 			$place1 = $GLOBALS["place"];
+			$usr1 = $GLOBALS["usr"];
+			$date1 = $GLOBALS["date"];
+			$license1 = $GLOBALS["license"];
 			//echo $off1;
-			$qury = "INSERT INTO useroffence (offence, paid, vehicleno, place) VALUES ('$off1', $fin1, '$vno1', '$place1')";
+		
+			
+				$qury = "INSERT INTO useroffence (offence, fine, vehicleno, place, officialusername,licenseno) VALUES ('$off1', $fin1, '$vno1', '$place1','$usr1','$license1')"; 
+				$emailq = "SELECT name,emailid from users where name = '$usr1' ";
+			
 			//$qury = "INSERT INTO useroffence (vehicleno, offence, place, paid) VALUES ('vno', 'off', 'place', 'fin')";
 			if (mysqli_query($GLOBALS["conn"], $qury))
 			 {
-			    echo "Record updated successfully";
+				 $result = mysqli_query($GLOBALS["conn"],$emailq);
+				 $row = mysqli_fetch_assoc($result);
+				echo "Record updated successfully";
+				require("PHPMailer-master\src\PHPMailer.php");
+    require("PHPMailer-master\src\SMTP.php");
+    require("PHPMailer-master\src\Exception.php");
+
+
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+    $mail->IsSMTP(); 
+
+    $mail->CharSet="UTF-8";
+    $mail->Host = " smtp.gmail.com";
+    $mail->SMTPDebug = 1; 
+    $mail->Port = 465 ; //465 or 587
+
+     $mail->SMTPSecure = 'ssl';  
+    $mail->SMTPAuth = true; 
+    $mail->IsHTML(true);
+
+    //Authentication
+    $mail->Username = "trafficDBMSsjbit@gmail.com";
+	$mail->Password = "traffic@1234";
+	
+	echo $row['name'];
+
+    //Set Params
+    $mail->SetFrom("trafficDBMSsjbit@gmail.com");
+    $mail->AddAddress($row['emailid']);
+    $mail->Subject = "Your offence receipt";
+    $mail->Body = "Here are the details of your offence: Vehicle Number: ".$vno1." Offence: ".$off1." Place: ".$place1." Fine: ₹".$fin1;
+
+
+     if(!$mail->Send()) {
+        echo "Mailer Error: " . $mail->ErrorInfo;
+     } else {
+        echo "Message has been sent";
+     }
 			 }
 			 else 
 			 {
@@ -171,63 +233,85 @@ This page comes in when the cop registration is successfull-->
 	mysqli_close($conn);
 ?>
 
- <nav class="navbar navbar-default">
-        <div class="container-fluid">
+
+		
+
+<div class="cen">
+
+<nav class="navbar navbar-expand-sm bg-transparent border-bottom navbar-dark">
+        <div class="container">
             <div class="navbar-header">
-                <a href="Homepage.html" class="navbar-brand">Police Database</a>
+                <a href="#" class="navbar-brand">Traffic Police Database</a>
             </div>
 
             <div>
-                <ul class="nav navbar-nav" style="font-size: 15px">
-                    <li><a>Cop logged in</a></li>
+                <!-- <ul class -->
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class = "nav-link" href="homepage.php">Civilian</a></li>
+                <!-- </ul> -->
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="About.html">About</a></li>
+                <!-- </ul> -->
+
+                <!-- <ul class="nav navbar-nav"> -->
+                    <li class = "nav-item"><a class = "nav-link" href="Contact.html">Contact Us</a></li>
+
+					<li class = "nav-item"><a class = "nav-link" href="Logout.php">Logout</a></li>
                 </ul>
 
             </div>
-			<div class="nav navbar-nav" style="float: right">
-                <a href="logout.php" class="btn btn-default">Log out</a>
-            </div>	 
         </div>
     </nav>
-<div class="basic">
-	<div class="crime_input">
-	<center><h1>Crime input</h1></center><br><br>
-	<center><form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "POST" class="crime_form">
-	<table class="crime" align="center" >
+	<h1>Crime input</h1><br/><br/>
+	<div class="cen">
+
+	
+	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "POST">
+	<table class="crime">
 		<tr>
 			<td><label for="uid">Vehicle number</label></td>
 			<td><label for="uid">Place of offence</label></td>
 			<td><label for="uid">Offence</label></td>
 			<td><label for="uid">Fine</label></td>
+			<td><label for="uid">Username</label></td>
+			<td><label for="uid">License Number</label></td>
 
 		</tr>
-	</div>
+	
 		<tr id="input">
-			<td><input type="text" name="number" placeholder="Vehicle number"></td>
-			<td><input type="text" name="place" placeholder="Area"></td>
-			<td><input type="text" name="offence" placeholder="Offence"></td>
-			<td><input type="number" name="fine" placeholder="Fine"></td>
+			<td><input class = "input_form_crime" type="text" name="number" placeholder="Vehicle number"></td>
+			<td><input class = "input_form_crime" type="text" name="place" placeholder="Area"></td>
+			<td><input class = "input_form_crime" type="text" name="offence" placeholder="Offence"></td>
+			<td><input class = "input_form_crime" type="number" name="fine" placeholder="Fine"></td>
+			<td><input class = "input_form_crime" type="text" name="username" placeholder="Username"></td>
+			<td><input class = "input_form_crime" type="text" name="licno" placeholder="License Number"></td>
 		</tr>
 		
-		<tr id="err">
+		<tr id="err">	
 			<td><span class="error"><?php echo $vnoerr; ?> </span></td>
 			<td><span class="error"><?php echo $placeerr; ?> </span></td>
 			<td><span class="error"><?php echo $offerr; ?> </span></td>
 			<td><span class="error"><?php echo $finerr; ?> </span></td>
+			<td><span class="error"><?php echo $usrerr; ?> </span></td>
+			<td><span class="error"><?php echo $licerr; ?> </span></td>
 
 		</tr>
 	</table>
+	
+	<input type="submit" name="submit" onsubmit="send_data()" class="btn1"><br><br>	
+	<a href="delpge.php" class="btn1" style="color:white;">Delete a record</a>
+	<br><br>
+	  <!-- <div class="alert alert-success" style="width: 50%">
+        Success! The record has been stored!
+		</div>
+    
 
-	<input type="submit" name="submit" align="center" onsubmit="" class="btn btn-default"><br><br>
-    <div class="alert alert-success">
-        <strong>Success!</strong> The record has been stored!
-    </div>
-
-    <div class="alert alert-danger">
-        <strong>Error!</strong> The record is not saved.
-    </div>
+    <div class="alert alert-danger" style="width: 50%">
+        Error! The record is not saved.
+	</div>
+	 -->
 	</form>
-	<a href="delpge.php" class="btn btn-default">Delete a record</a>
-</center>
+</div>
 </div>
 </body>
 </html>
