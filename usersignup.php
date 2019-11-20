@@ -78,8 +78,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
+        $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+
+
+        $check = "SELECT vehicleno,licenseno from users";
+        $result = mysqli_query($conn,$check);
+        if(!empty($row = mysqli_fetch_assoc($result))){
+                $sql = "UPDATE users set phno = $phoneno,emailid = '$emailid',name = '$name',password = '$param_password' where vehicleno = $vhno and licenseno = $licno ";
+
+
+        }
+        else{
         
         $sql = "INSERT INTO users (vehicleno, name, phno, emailid,licenseno,password) VALUES ('$vhno', ?,'$phoneno','$emailid','$licno',? )";
+        }
        // $sql1 = 'UPDATE users SET name = $name, designation = $desgn';
         // echo $sql;
         if (mysqli_query($conn, $sql)) {

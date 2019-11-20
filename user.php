@@ -80,8 +80,15 @@
 				<div class="Display">
 					<?php
 						require_once "config.php";
-						$gadno=""; 
-						$sql = "SELECT offence, fine, vehicleno, place, datetime,licenseno FROM useroffence WHERE Officialusername = '$loginusername'" ;
+                        $gadno=""; 
+                        $result = "";
+                        $vhno ="";
+                        $query ="SELECT vehicleno from users where name = '$loginusername'";
+                        $total = mysqli_query($conn,$query);
+                        $row = mysqli_fetch_assoc($total);
+                        $vhno = $row["vehicleno"];
+
+						$sql = "SELECT offence, fine, vehicleno, place, datetime,licenseno FROM useroffence WHERE vehicleno = '$vhno'" ;
 						$result = mysqli_query($conn, $sql);
 						if (mysqli_num_rows($result)>0) {
 						// output data of each row

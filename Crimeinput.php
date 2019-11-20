@@ -182,7 +182,7 @@
 			 {
 				 $result = mysqli_query($GLOBALS["conn"],$emailq);
 				 $row = mysqli_fetch_assoc($result);
-				echo "Record updated successfully";
+				echo "<script>alert('Record updated successfully')</script>";
 				require("PHPMailer-master\src\PHPMailer.php");
     require("PHPMailer-master\src\SMTP.php");
     require("PHPMailer-master\src\Exception.php");

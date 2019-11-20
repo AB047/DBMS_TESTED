@@ -33,7 +33,7 @@
 
                 if(empty($_POST["vhno"]))
                 {
-                    $vhnerr= "Please Enter a Booking Number <br>";
+                    $vhnerr= "Please Enter a Vehicle Number <br>";
                 }
                 else
                 {
@@ -58,12 +58,12 @@
 
                         if (mysqli_query($conn, $sql)) 
                         {
-                            echo "Record deleted successfully";
+                            echo "<script>alert('Record deleted successfully!')</script>";
                         } 
 
                         else 
                         {
-                            echo "Error deleting record: " . mysqli_error($conn);
+                            echo "<script>alert('Error deleting record: " . mysqli_error($conn) . "')</script>";
                         }
                     }//deleting recor here
                     
@@ -120,7 +120,7 @@
       <form action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "POST">
         <div class="form-group">
           <label for="vhno">Vehicle Number</label>
-          <input type="text" class="input_form" id="vhno" placeholder="Enter Booking Number" name="vhno">
+          <input type="text" class="input_form" id="vhno" placeholder="Enter Vehicle Number" name="vhno">
           <span class="error"> <?php echo $vhnerr; ?> </span>
         </div>
         <button type="submit" class="btn1">Submit</button>

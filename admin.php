@@ -88,7 +88,7 @@
             <div class="view">
                 <form method="POST">
                     <h3>Enter the name</h3>
-                    <input type="text" name="name" size="30" class="input_form" placeholder="Please Enter name">
+                    <input type="text" name="name" size="30" class="input_form" placeholder="Please Enter name" />
                     <input type="submit" value="Submit" class="btn1" />
                 </form>
                 <table class="table">
@@ -122,13 +122,18 @@
 						    //echo $row["vehicleno"];
                         }
                         $row = mysqli_fetch_assoc($total);
+                        if(!empty($name))
+                        {
                         echo "<br/><br/><h2><center>Total Fine Collected: ₹".$row["SUM(fine)"]."</center></h2>";
                         echo "<h2><center>Total Number of offences: ".$row["COUNT(offence)"]."</center></h2><br/><br/>";
-                        
-
-						} else {
+                        } 
+                        else{
+                            echo "<h2><center>Please type a Police Station name</center></h2>";
+                        }
+                    }
+                    else {
 						echo "<br/><br/><h3><center>No Police Stations with name $name found!</center></h3><br/><br/>";
-						}
+                        }
 						mysqli_close($conn);
 					?>
                     </div>
@@ -157,5 +162,4 @@
         });
     </script>
 </body>
-
 </html>

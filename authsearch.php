@@ -127,9 +127,13 @@ $name = "";
 						    //echo $row["vehicleno"];
                         }
                         $row = mysqli_fetch_assoc($total);
+                        if(!empty($name)){
                         echo "<br/><br/><h2><center>Total Fine Collected: ₹".$row["SUM(fine)"]."</center></h2>";
                         echo "<h2><center>Total Number of offences booked: ".$row["COUNT(offence)"]."</center></h2><br/><br/>";
-         
+                        }
+                        else{
+                            echo "<br/><br/><h2><center>Enter a cop name</center></h2>";
+                        }
 						} else {
 						echo "<br/><br/><h3><center>No users with name $name found!</center></h3><br/><br/>";
 						}

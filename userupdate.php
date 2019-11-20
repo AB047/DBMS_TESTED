@@ -25,19 +25,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Prepare a select statement
         
         $sql = "UPDATE users set phno = $phoneno,emailid = '$emailid' WHERE name = '$loginusername'";
-        echo $sql;    
+        // echo $sql;    
     // Check input errors before inserting in database
     if(empty($phoneno))
         $phn_err = "Please enter phone number.";
     if(empty($emailid))
     $email_err = "Please enter Email ID.";
    if (mysqli_query($conn, $sql) ) {
-      echo "Record updated successfully";
+    //   echo "Record updated successfully";
+    echo "<script>alert('Record Updated Successfully!')</script>";
+    echo '<script>window.location.href = "user.php";</script>';
       
         }
          
     else{
-                echo "Something went wrong. Please try again later.";
+                echo "<script>alert('Something went wrong. Please try again later.')</script>";
             }
         }
          

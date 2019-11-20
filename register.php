@@ -113,7 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
        // $sql1 = 'UPDATE users SET name = $name, designation = $desgn';
-        echo $sql;
+        // echo $sql;
         if (mysqli_query($conn, $sql)) {
       echo "New record created successfully";
       
@@ -128,11 +128,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
             //   echo $stmt;
-            echo "INNNNNNNNNNNN";
+            // echo "INNNNNNNNNNNN";
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                echo "$name was successfully added!";
+               echo "<script>alert('User was successfully added')</script>";
             // Close statement
             mysqli_stmt_close($stmt);
             } else{

@@ -50,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         {
             $sql = "SELECT name,Password from users WHERE name = ?";
         }
-        echo $sql;
+        // echo $sql;
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
