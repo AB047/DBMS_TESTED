@@ -201,8 +201,8 @@
     $mail->IsHTML(true);
 
     //Authentication
-    $mail->Username = "trafficDBMSsjbit@gmail.com";
-	$mail->Password = "traffic@1234";
+    $mail->Username = ""; //add username here
+	$mail->Password = ""; //add password here
 	
 	echo $row['name'];
 
@@ -210,8 +210,7 @@
     $mail->SetFrom("trafficDBMSsjbit@gmail.com");
     $mail->AddAddress($row['emailid']);
     $mail->Subject = "Your offence receipt";
-    $mail->Body = "Here are the details of your offence: Vehicle Number: ".$vno1." Offence: ".$off1." Place: ".$place1." Fine: ₹".$fin1;
-
+	$mail->Body = "Here are the details of your offence: <br><br><br>Vehicle Number: ".$vno1." <br><br>Offence: ".$off1." <br><br>Place: ".$place1." <br><br>Fine: ₹".$fin1;
 
      if(!$mail->Send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
