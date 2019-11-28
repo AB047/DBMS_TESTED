@@ -81,19 +81,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
 
 
-        $check = "SELECT vehicleno,licenseno from users";
+        $check = "SELECT vehicleno,licenseno from users where vehicleno = $vhno and licensno = $licno";
         $result = mysqli_query($conn,$check);
         if(!empty($row = mysqli_fetch_assoc($result))){
-                $sql = "UPDATE users set phno = $phoneno,emailid = '$emailid',name = '$name',password = '$param_password' where vehicleno = $vhno and licenseno = $licno ";
+                // echo "---->".$row["vehicleno"];
+                $sql = "UPDATE users set phno = $phoneno,emailid = '$emailid',name = '$name',password = ? where vehicleno = $vhno and licenseno = $licno ";
 
 
         }
         else{
         
-        $sql = "INSERT INTO users (vehicleno, name, phno, emailid,licenseno,password) VALUES ('$vhno', ?,'$phoneno','$emailid','$licno',? )";
+        $sql = "INSERT INTO users (vehicleno, name, phno, emailid,licenseno,password) VALUES ('$vhno', '$name','$phoneno','$emailid','$licno',? )";
         }
        // $sql1 = 'UPDATE users SET name = $name, designation = $desgn';
-        // echo $sql;
+         echo $sql;
         if (mysqli_query($conn, $sql)) {
     //   echo "New record created successfully";
       
@@ -106,7 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             // $param_added = $desgn; 
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
+            mysqli_stmt_bind_param($stmt, "s",$param_password);
             //   echo $stmt;
             // echo "INNNNNNNNNNNN";
             // Attempt to execute the prepared statement
@@ -115,7 +116,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "<script>alert('User was successfully added!!')</script>";
                 echo '<script>window.location.href = "login.php";</script>';
 
-                echo "$name was successfully added!";
+                // echo "$name was successfully added!";
             // Close statement
             mysqli_stmt_close($stmt);
             } else{
